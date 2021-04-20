@@ -1,19 +1,31 @@
-<div class="course-card" [ngClass]="cardClasses()" *ngIf="course">
+<ng-container *ngIf="course">
+  <div class="course-card" [ngClass]="cardClasses()">
 
-  <div class="course-title">
-    {{ cardIndex + ' ' + course.description }}
+    <div class="course-title" [ngStyle]="cardStyles()">
+      {{ cardIndex || '' + ' ' + course.description }}
+    </div>
+
+    <img #courseImage width="300" alt="Angular Logo" *ngIf="isImageVisible(); else noImage" [src]="course.iconUrl">
+
+    <ng-template #noImage>
+      <p>No image is available</p>
+    </ng-template>
+
+    <div class="course-description">
+      {{course.longDescription}}
+    </div>
+
+    <ng-container [ngSwitch]="course.category">
+      <div class="course-category">
+        <div class="category" *ngSwitchCase="'BEGINNER'">Beginner</div>
+        <div class="category" *ngSwitchCase="'INTERMEDIATE'">Intermediate</div>
+        <div class="category" *ngSwitchCase="'ADVANCED'">Advanced</div>
+        <div class="category" *ngSwitchDefault>All Levels</div>
+      </div>
+    </ng-container>
+
+
+    <button (click)="onCourseSelected()">View Course</button>
+
   </div>
-
-  <img width="300" alt="Angular Logo" *ngIf="isImageVisible(); else noImage" [src]="course.iconUrl">
-
-  <ng-template #noImage>
-    <p>No image is available</p>
-  </ng-template>
-
-  <div class="course-description">
-    {{course.longDescription}}
-  </div>
-
-  <button (click)="onCourseSelected()">View Course</button>
-
-</div>
+</ng-container>
